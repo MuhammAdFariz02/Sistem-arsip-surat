@@ -600,6 +600,11 @@
             </a>
 
             @if(Auth::user()->role == 'admin')
+            <a href="{{ route('arsip-pengajuan-surat.index') }}" class="nav-link {{ request()->is('arsip-pengajuan-surat*') ? 'active' : '' }}">
+                <i class="fas fa-box-archive"></i>
+                <span>Arsip Pengajuan</span>
+            </a>
+
             <div class="menu-label">Master Data</div>
             <a href="{{ route('jenis-surat.index') }}" class="nav-link {{ request()->is('jenis-surat*') ? 'active' : '' }}">
                 <i class="fas fa-layer-group"></i>

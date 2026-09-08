@@ -1798,4 +1798,96 @@ class PengajuanSuratPhaseOneTest extends TestCase
             ]);
         }
     }
+
+    public function test_admin_can_open_archive_for_all_pengajuan_surat(): void
+    {
+        $this->seed();
+
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $staff = User::where('role', 'staff')->firstOrFail();
+        $kasi = User::where('role', 'kasi')->firstOrFail();
+        $suratTugas = JenisSurat::where('slug', 'surat-tugas')->firstOrFail();
+        $suratCuti = JenisSurat::where('slug', 'surat-cuti')->firstOrFail();
+
+        PengajuanSurat::create([
+            'jenis_surat_id' => $suratTugas->id,
+            'pemohon_id' => $staff->id,
+            'nomor_pengajuan' => 'PGJ-20260724-7701',
+            'tanggal_pengajuan' => '2026-07-24',
+            'perihal' => 'Arsip surat tugas patroli batas kawasan',
+            'status' => 'selesai',
+            'posisi_saat_ini' => $staff->id,
+            'metadata' => ['form_data' => []],
+        ]);
+
+        PengajuanSurat::create([
+            'jenis_surat_id' => $suratCuti->id,
+            'pemohon_id' => $staff->id,
+            'nomor_pengajuan' => 'PGJ-20260725-7702',
+            'tanggal_pengajuan' => '2026-07-25',
+            'perihal' => 'Arsip cuti keluarga',
+            'status' => 'diajukan',
+            'posisi_saat_ini' => $kasi->id,
+            'metadata' => ['form_data' => []],
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('arsip-pengajuan-surat.index'))
+            ->assertOk()
+            ->assertSee('Semua Pengajuan Surat')
+            ->assertSee('Arsip surat tugas patroli batas kawasan')
+            ->assertSee('Arsip cuti keluarga')
+            ->assertSee('PGJ-20260724-7701')
+            ->assertSee('Preview dokumen');
+    }
+
+    public function test_archive_pengajuan_surat_is_admin_only(): void
+    {
+        $this->seed();
+
+        $staff = User::where('role', 'staff')->firstOrFail();
+
+        $this->actingAs($staff)
+            ->get(route('arsip-pengajuan-surat.index'))
+            ->assertForbidden();
+    }
+
+    public function test_admin_can_filter_archive_by_jenis_surat(): void
+    {
+        $this->seed();
+
+        $admin = User::where('role', 'admin')->firstOrFail();
+        $staff = User::where('role', 'staff')->firstOrFail();
+        $kasi = User::where('role', 'kasi')->firstOrFail();
+        $suratTugas = JenisSurat::where('slug', 'surat-tugas')->firstOrFail();
+        $suratCuti = JenisSurat::where('slug', 'surat-cuti')->firstOrFail();
+
+        PengajuanSurat::create([
+            'jenis_surat_id' => $suratTugas->id,
+            'pemohon_id' => $staff->id,
+            'nomor_pengajuan' => 'PGJ-20260726-7703',
+            'tanggal_pengajuan' => '2026-07-26',
+            'perihal' => 'Filter arsip surat tugas',
+            'status' => 'diajukan',
+            'posisi_saat_ini' => $kasi->id,
+            'metadata' => ['form_data' => []],
+        ]);
+
+        PengajuanSurat::create([
+            'jenis_surat_id' => $suratCuti->id,
+            'pemohon_id' => $staff->id,
+            'nomor_pengajuan' => 'PGJ-20260727-7704',
+            'tanggal_pengajuan' => '2026-07-27',
+            'perihal' => 'Filter arsip cuti',
+            'status' => 'diajukan',
+            'posisi_saat_ini' => $kasi->id,
+            'metadata' => ['form_data' => []],
+        ]);
+
+        $this->actingAs($admin)
+            ->get(route('arsip-pengajuan-surat.index', ['jenis_surat_id' => $suratTugas->id]))
+            ->assertOk()
+            ->assertSee('Filter arsip surat tugas')
+            ->assertDontSee('Filter arsip cuti');
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArsipPengajuanSuratController;
 use App\Http\Controllers\JenisSuratController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PengajuanSuratController;
@@ -28,6 +29,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [LaporanController::class, 'index'])->name('dashboard');
+    Route::get('/arsip-pengajuan-surat', [ArsipPengajuanSuratController::class, 'index'])->name('arsip-pengajuan-surat.index');
     Route::resource('jenis-surat', JenisSuratController::class)->except(['create', 'edit', 'show']);
     Route::post('pengajuan-surat/{pengajuan_surat}/process', [PengajuanSuratController::class, 'process'])->name('pengajuan-surat.process');
     Route::post('pengajuan-surat/{pengajuan_surat}/sign', [PengajuanSuratController::class, 'sign'])->name('pengajuan-surat.sign');
