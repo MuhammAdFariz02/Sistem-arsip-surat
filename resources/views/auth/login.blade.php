@@ -238,81 +238,6 @@
             box-shadow: 0 10px 25px rgba(15, 118, 110, 0.26);
         }
 
-        .demo-accounts {
-            margin-top: 22px;
-            padding: 16px;
-            background: #f8f5ee;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-        }
-
-        .demo-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .demo-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--ink);
-            font-size: 0.92rem;
-            font-weight: 700;
-        }
-
-        .demo-password {
-            color: #64748b;
-            font-size: 0.78rem;
-            white-space: nowrap;
-        }
-
-        .demo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 8px;
-        }
-
-        .demo-account {
-            border: 1px solid #d6ded6;
-            border-left: 4px solid var(--gold);
-            border-radius: 8px;
-            background: #fffdf8;
-            padding: 10px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .demo-account:hover {
-            border-color: var(--forest);
-            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-            transform: translateY(-1px);
-        }
-
-        .demo-role {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            color: #0f172a;
-            font-size: 0.82rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .demo-role i {
-            color: var(--forest);
-            font-size: 0.85rem;
-        }
-
-        .demo-nip {
-            color: #64748b;
-            font-size: 0.75rem;
-            overflow-wrap: anywhere;
-        }
-
         .alert {
             padding: 14px 18px;
             border-radius: 10px;
@@ -353,9 +278,6 @@
                 padding: 40px 30px;
             }
 
-            .demo-grid {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 576px) {
@@ -389,11 +311,6 @@
                 font-size: 1.5rem;
             }
 
-            .demo-header {
-                align-items: flex-start;
-                flex-direction: column;
-                gap: 6px;
-            }
         }
     </style>
 </head>
@@ -453,35 +370,6 @@
                     </button>
                 </form>
 
-                <div class="demo-accounts" aria-label="Akun demo untuk testing">
-                    <div class="demo-header">
-                        <div class="demo-title">
-                            <i class="fas fa-id-card"></i>
-                            <span>Akun Demo</span>
-                        </div>
-                        <div class="demo-password">Password semua: <strong>password</strong></div>
-                    </div>
-
-                    <div class="demo-grid">
-                        <button type="button" class="demo-account" data-nip="000000000000000000">
-                            <div class="demo-role"><i class="fas fa-user-shield"></i> Admin</div>
-                            <div class="demo-nip">000000000000000000</div>
-                        </button>
-                        <button type="button" class="demo-account" data-nip="197801012006041001">
-                            <div class="demo-role"><i class="fas fa-user-tie"></i> Kabid</div>
-                            <div class="demo-nip">197801012006041001</div>
-                        </button>
-                        <button type="button" class="demo-account" data-nip="198203152010012002">
-                            <div class="demo-role"><i class="fas fa-user-check"></i> Kasi</div>
-                            <div class="demo-nip">198203152010012002</div>
-                        </button>
-                        <button type="button" class="demo-account" data-nip="199909062025211021">
-                            <div class="demo-role"><i class="fas fa-user"></i> Staff</div>
-                            <div class="demo-nip">199909062025211021</div>
-                        </button>
-                    </div>
-                </div>
-
                 <div class="footer-text">
                     <p>&copy; 2024 Sistem Pelacakan Pengajuan Surat</p>
                 </div>
@@ -496,15 +384,6 @@
         document.getElementById('errorMessage').textContent = '{{ $errors->first() }}';
     </script>
     @endif
-
-    <script>
-        document.querySelectorAll('.demo-account').forEach((button) => {
-            button.addEventListener('click', () => {
-                document.getElementById('nipInput').value = button.dataset.nip;
-                document.getElementById('passwordInput').value = 'password';
-            });
-        });
-    </script>
 
 </body>
 
